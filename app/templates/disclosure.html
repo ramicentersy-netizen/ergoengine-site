@@ -1,0 +1,21 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Affiliate Transparency & Editorial Independence - ErgoEngine{% endblock %}
+
+{% block content %}
+<div class="policy-wrapper">
+    <h1>Affiliate Disclosure & Editorial Integrity Policy</h1>
+    <p class="last-updated">Effective: 2026 Edition</p>
+
+    <p>{{ settings.AFFILIATE_DISCLOSURE_TEXT }}</p>
+
+    <h3>1. Amazon Associates & Merchant Partnerships</h3>
+    <p>ErgoEngine participates in the Amazon Services LLC Associates Program, an affiliate advertising program engineered to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com and affiliated global storefronts.</p>
+
+    <h3>2. No Fabricated or Compensated Reviews</h3>
+    <p>We do not accept direct financial remuneration in exchange for positive product ratings. Products included in our comparison frameworks are selected based on market relevance, ergonomic compliance, and engineering durability.</p>
+
+    <h3>3. Direct Link Safety</h3>
+    <p>All monetization links are tracked via localized redirect routers (<code>/go/product-slug</code>) to maintain strict user privacy while monitoring click attribution.</p>
+</div>
+{% endblock %}

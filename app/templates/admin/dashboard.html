@@ -1,0 +1,120 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Mission Control - AI Autonomous Agent Engine{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <header class="dash-head">
+        <div>
+            <h1>Autonomous Agent Intelligence Dashboard</h1>
+            <p class="status-indicator">🟢 Agent System: <strong>Active & Scheduled (24h Loop)</strong></p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="/admin/export/clicks-csv" class="btn btn-sm btn-primary" style="background: #16a34a;">📥 Export Clicks (CSV)</a>
+            <a href="/" class="btn btn-sm btn-primary">← View Live Site</a>
+        </div>
+    </header>
+
+    <div class="metrics-row">
+        <div class="metric-box">
+            <span class="m-title">Published Articles</span>
+            <span class="m-val">{{ analytics.total_articles }}</span>
+            <span class="m-sub">100% Quality Validated</span>
+        </div>
+        <div class="metric-box">
+            <span class="m-title">Tracked Catalog</span>
+            <span class="m-val">{{ analytics.total_products }}</span>
+            <span class="m-sub">Active Partner Links</span>
+        </div>
+        <div class="metric-box">
+            <span class="m-title">Affiliate Outbound Clicks</span>
+            <span class="m-val">{{ analytics.total_clicks }}</span>
+            <span class="m-sub">Tracked via Safe Router</span>
+        </div>
+    </div>
+
+    <div class="strategic-box">
+        <div class="strat-header">🧠 Autonomous AI Decision Engine (Next Strategic Move):</div>
+        <p class="action-highlight">{{ analytics.actionable_next_step }}</p>
+    </div>
+
+    <div class="admin-grid charts-row">
+        <div class="dash-card">
+            <h3>📊 Outbound Product Clicks Distribution</h3>
+            <div style="max-height: 280px; position: relative;">
+                <canvas id="clicksBarChart"></canvas>
+            </div>
+        </div>
+
+        <div class="dash-card">
+            <h3>📑 Content Catalog & Indexation</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Article Title</th>
+                        <th>Type</th>
+                        <th>Views</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for art in articles %}
+                    <tr>
+                        <td><a href="/reviews/{{ art.slug }}" target="_blank"><strong>{{ art.title }}</strong></a></td>
+                        <td><span class="badge">{{ art.article_type }}</span></td>
+                        <td>👁️ {{ art.page_views }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="dash-card" style="margin-top: 24px;">
+        <h3>🖥️ Real-time Autonomous Agent Audit Logs</h3>
+        <div class="log-stream">
+            {% for l in logs %}
+            <div class="log-entry">
+                <span class="log-time">{{ l.created_at.strftime('%H:%M:%S') }}</span>
+                <span class="log-agent">[{{ l.agent_name }}]</span>
+                <span class="log-action">({{ l.action_type }})</span>
+                <span class="log-status {{ l.status }}">{{ l.status }}</span>:
+                <span class="log-detail">{{ l.details }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    const productLabels = {{ analytics.top_products | map(attribute='name') | list | tojson }};
+    const clickCounts = {{ analytics.top_products | map(attribute='clicks') | list | tojson }};
+
+    const ctx = document.getElementById('clicksBarChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: productLabels.length > 0 ? productLabels : ['Aeron Chair', 'Uplift V2', 'ErgoChair Pro', 'Ergotron Arm', 'BenQ Halo'],
+            datasets: [{
+                label: 'Outbound Referral Clicks',
+                data: productLabels.length > 0 ? clickCounts : [0, 0, 0, 0, 0],
+                backgroundColor: '#2563eb',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ settings.PROJECT_NAME }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}Scientific, objective ergonomics and home productivity equipment guides.{% endblock %}">
+    <link rel="stylesheet" href="/static/css/style.css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <aside class="affiliate-top-bar">
+        <div class="container">
+            ⚖️ <strong>Transparency Notice:</strong> {{ settings.AFFILIATE_DISCLOSURE_TEXT }} <a href="/disclosure">Read Policy</a>
+        </div>
+    </aside>
+
+    <header class="main-nav">
+        <div class="container nav-content">
+            <a href="/" class="brand-logo">Ergo<span>Engine</span></a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/#articles">Guides</a>
+                <a href="/#products">Gear Database</a>
+                <a href="/admin">Mission Control (Admin)</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ErgoEngine. Editorial Autonomy and Data-Backed Ergonomic Testing.</p>
+            <p><a href="/disclosure">Affiliate Disclosure</a> | <a href="#">Privacy Framework</a> | <a href="#">Terms of Analysis</a></p>
+        </div>
+    </footer>
+</body>
+</html>

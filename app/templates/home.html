@@ -1,0 +1,40 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section">
+    <h1>Data-Backed Workstation Architecture</h1>
+    <p class="subtitle">Eliminate spine strain and elevate focus with independent, calibrated reviews of modern ergonomic chairs, sit-stand desks, and desk peripherals.</p>
+</section>
+
+<section id="articles" class="section-block">
+    <h2>Latest Commercial Buying Guides</h2>
+    <div class="grid-cards">
+        {% for article in articles %}
+        <div class="card">
+            <span class="badge">{{ article.category }}</span>
+            <h3><a href="/reviews/{{ article.slug }}">{{ article.title }}</a></h3>
+            <p>{{ article.meta_description }}</p>
+            <div class="card-meta">
+                <span>⏱️ {{ article.reading_time_minutes }} min read</span> • <span>👁️ {{ article.page_views }} views</span>
+            </div>
+            <a href="/reviews/{{ article.slug }}" class="read-more">Read Comprehensive Analysis →</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="products" class="section-block">
+    <h2>Verified Evaluated Products</h2>
+    <div class="grid-cards">
+        {% for prod in products %}
+        <div class="card product-mini">
+            <h4>{{ prod.name }}</h4>
+            <div class="brand-sub">Manufacturer: <strong>{{ prod.brand }}</strong></div>
+            <div class="price">${{ "%.2f"|format(prod.price) }} {{ prod.currency }}</div>
+            <p class="ideal-for"><strong>Ideal for:</strong> {{ prod.ideal_for }}</p>
+            <a href="/go/{{ prod.slug }}?src=home_grid" class="btn btn-primary btn-sm" rel="nofollow sponsored" target="_blank">Direct Partner Check →</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
