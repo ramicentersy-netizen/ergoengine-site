@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Depends, Request, HTTPException
+from fastapi import APIRouter, Depends, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -24,19 +24,13 @@ async def home(request: Request, db: Session = Depends(get_db)):
     )
 
 @router.get("/reviews/{slug}", response_class=HTMLResponse)
-async def article_detail(slug: str, request: Request, db: Session = Depends(get_db)):
+async def review_detail(request: Request, slug: str, db: Session = Depends(get_db)):
     article = db.query(Article).filter(Article.slug == slug).first()
     if not article:
-        raise HTTPException(status_code=404, detail="Review not found")
-    
-    article.page_views += 1
-    db.commit()
-
-    template_name = "comparison.html" if article.article_type == "comparison" else "article.html"
-
+        raise HTTPException(status_code=404, detail="Article not found")
     return templates.TemplateResponse(
         request=request,
-        name=template_name,
+        name="article.html",
         context={
             "article": article,
             "settings": settings
@@ -48,7 +42,13 @@ async def disclosure(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="disclosure.html",
-        context={
-            "settings": settings
-        }
+        context={"settings": settings}
+    )
+
+@router.get("/templates/project-management", response_class=HTMLResponse)
+async def project_management_template(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="notion_template.html",
+        context={"settings": settings}
     )

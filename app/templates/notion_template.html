@@ -1,0 +1,63 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<section class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Header / Hero -->
+    <div class="text-center space-y-4 mb-12">
+        <span class="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+            Notion Workspace System
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+            Complete Project Management System for Notion
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+            Organize clients, sprints, deliverables, and team bandwidth in one connected, zero-clutter workspace.
+        </p>
+        <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
+            <a href="#pricing" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 shadow-md">
+                Get the Template
+            </a>
+            <a href="#features" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50">
+                Explore Features
+            </a>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div id="features" class="grid md:grid-cols-3 gap-6 my-16">
+        <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100 space-y-2">
+            <h3 class="font-bold text-lg text-gray-800">🚀 Agile Sprints & Tasks</h3>
+            <p class="text-sm text-gray-600">Kanban boards, timeline views, and priority matrix linked directly to active projects.</p>
+        </div>
+        <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100 space-y-2">
+            <h3 class="font-bold text-lg text-gray-800">📊 Client & CRM Portal</h3>
+            <p class="text-sm text-gray-600">Track invoices, contracts, deliverables, and client communications in one place.</p>
+        </div>
+        <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100 space-y-2">
+            <h3 class="font-bold text-lg text-gray-800">⏱️ Resource & Time Tracker</h3>
+            <p class="text-sm text-gray-600">Monitor deadlines, team allocation, and project budgets with automated rollups.</p>
+        </div>
+    </div>
+
+    <!-- Pricing / Checkout Card -->
+    <div id="pricing" class="max-w-lg mx-auto bg-gray-50 border border-gray-200 rounded-2xl p-8 text-center shadow-lg">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Instant Workspace Access</h2>
+        <p class="text-sm text-gray-500 mb-6">One-time purchase • Free future updates • 2-minute duplicate setup</p>
+        
+        <div class="text-4xl font-black text-gray-900 mb-6">
+            $19 <span class="text-base font-normal text-gray-500 line-through">$39</span>
+        </div>
+
+        <ul class="text-left text-sm text-gray-600 space-y-3 mb-8">
+            <li class="flex items-center gap-2">✓ Full Project & Task Database System</li>
+            <li class="flex items-center gap-2">✓ Automated Progress Bars & Rollup Formulas</li>
+            <li class="flex items-center gap-2">✓ Video Guide & Quick Setup Documentation</li>
+        </ul>
+
+        <a id="buy-button" href="https://gumroad.com" target="_blank" class="w-full block py-4 text-center text-white bg-indigo-600 hover:bg-indigo-700 font-semibold rounded-xl transition-all shadow-md hover:shadow-lg">
+            Get Instant Access →
+        </a>
+        <p class="text-xs text-gray-400 mt-3">Secured checkout via Gumroad / Stripe</p>
+    </div>
+</section>
+{% endblock %}
