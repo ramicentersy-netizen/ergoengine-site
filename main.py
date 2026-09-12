@@ -1,15 +1,43 @@
-﻿from fastapi import FastAPI
+﻿import json
+import os
+from datetime import datetime
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 app = FastAPI(title="ErgoEngine Platform")
 
-# خريطة روابط الأفلييت مع مسارات التوجيه المقنع
+# خريطة روابط الأفلييت
 AFFILIATE_MAP = {
     "chair-premium": "https://amzn.to/4xWtXos",
     "chair-budget": "https://amzn.to/4xQU5B3",
     "standing-desk": "https://amzn.to/4y2YYXG",
     "monitor-arm": "https://amzn.to/4xNeOpl"
 }
+
+STATS_FILE = "click_stats.json"
+
+def log_click(slug: str, referer: str):
+    data = {"total_clicks": 0, "by_product": {}, "recent_logs": []}
+    if os.path.exists(STATS_FILE):
+        try:
+            with open(STATS_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            pass
+
+    data["total_clicks"] = data.get("total_clicks", 0) + 1
+    data["by_product"][slug] = data["by_product"].get(slug, 0) + 1
+    
+    log_entry = {
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "product": slug,
+        "source": referer or "Direct"
+    }
+    data["recent_logs"].insert(0, log_entry)
+    data["recent_logs"] = data["recent_logs"][:50]  # حفظ آخر 50 نقرة فقط
+
+    with open(STATS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
 BASE_CSS = """
 <style>
@@ -27,6 +55,8 @@ BASE_CSS = """
     th, td { border: 1px solid #e2e8f0; padding: 12px 16px; text-align: left; }
     th { background: #f1f5f9; color: #0f172a; }
     .badge { background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 9999px; font-size: 0.85rem; font-weight: bold; }
+    .metric-card { display: inline-block; background: #f1f5f9; padding: 15px 25px; border-radius: 8px; margin-right: 15px; margin-bottom: 15px; }
+    .metric-val { font-size: 1.8rem; font-weight: bold; color: #0284c7; }
     .footer { margin-top: 40px; font-size: 0.85rem; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; }
 </style>
 """
@@ -53,9 +83,54 @@ def home():
     """)
 
 @app.get("/go/{slug}")
-def affiliate_redirect(slug: str):
+def affiliate_redirect(slug: str, request: Request):
+    referer = request.headers.get("referer", "")
+    log_click(slug, referer)
     target = AFFILIATE_MAP.get(slug, "https://amzn.to/4xWtXos")
     return RedirectResponse(url=target, status_code=307)
+
+@app.get("/analytics")
+def show_analytics():
+    data = {"total_clicks": 0, "by_product": {}, "recent_logs": []}
+    if os.path.exists(STATS_FILE):
+        try:
+            with open(STATS_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            pass
+
+    prod_rows = "".join([f"<tr><td><strong>{k}</strong></td><td>{v}</td></tr>" for k, v in data.get("by_product", {}).items()])
+    log_rows = "".join([f"<tr><td>{entry.get('time')}</td><td>{entry.get('product')}</td><td>{entry.get('source')}</td></tr>" for entry in data.get("recent_logs", [])])
+
+    return HTMLResponse(f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head><meta charset="utf-8"><title>ErgoEngine | Live Metrics</title>{BASE_CSS}</head>
+    <body>
+        <div class="container">
+            <h1>ErgoEngine Referral Traffic & Click Tracker</h1>
+            <div style="margin: 20px 0;">
+                <div class="metric-card">
+                    <div>Total Outbound Clicks</div>
+                    <div class="metric-val">{data.get("total_clicks", 0)}</div>
+                </div>
+            </div>
+
+            <h2>Clicks Breakdown by Product</h2>
+            <table>
+                <tr><th>Product Endpoint</th><th>Total Direct Clicks</th></tr>
+                {prod_rows or '<tr><td colspan="2">No outbound clicks recorded yet.</td></tr>'}
+            </table>
+
+            <h2>Recent Activity Feed (Last 50 Events)</h2>
+            <table>
+                <tr><th>Timestamp</th><th>Target Endpoint</th><th>Referer Source</th></tr>
+                {log_rows or '<tr><td colspan="3">No activity logged yet. Tracking is active.</td></tr>'}
+            </table>
+        </div>
+    </body>
+    </html>
+    """)
 
 @app.get("/posts/best-ergonomic-office-chairs")
 def chair_review():
@@ -63,10 +138,8 @@ def chair_review():
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Say Goodbye to Lower Back Pain: Best Ergonomic Office Chairs</title>
-        {BASE_CSS}
+        <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Say Goodbye to Lower Back Pain: Best Ergonomic Office Chairs</title>{BASE_CSS}
     </head>
     <body>
         <div class="container">
@@ -84,31 +157,11 @@ def chair_review():
 
             <h2>Head-to-Head Comparison Matrix</h2>
             <table>
-                <tr>
-                    <th>Feature</th>
-                    <th>Premium Tier Pick</th>
-                    <th>Budget-Friendly Pick</th>
-                </tr>
-                <tr>
-                    <td><strong>Lumbar Support</strong></td>
-                    <td>Dynamic 3D Adaptive</td>
-                    <td>Integrated Contoured Curve</td>
-                </tr>
-                <tr>
-                    <td><strong>Weight Capacity</strong></td>
-                    <td>Up to 330 lbs (150 kg)</td>
-                    <td>Up to 250 lbs (113 kg)</td>
-                </tr>
-                <tr>
-                    <td><strong>Recline Range</strong></td>
-                    <td>90° to 135° Multi-Lock</td>
-                    <td>Tilt Rocking Mechanism</td>
-                </tr>
-                <tr>
-                    <td><strong>Material</strong></td>
-                    <td>High-Tension Double Mesh</td>
-                    <td>Breathable Fabric Mesh</td>
-                </tr>
+                <tr><th>Feature</th><th>Premium Tier Pick</th><th>Budget-Friendly Pick</th></tr>
+                <tr><td><strong>Lumbar Support</strong></td><td>Dynamic 3D Adaptive</td><td>Integrated Contoured Curve</td></tr>
+                <tr><td><strong>Weight Capacity</strong></td><td>Up to 330 lbs (150 kg)</td><td>Up to 250 lbs (113 kg)</td></tr>
+                <tr><td><strong>Recline Range</strong></td><td>90° to 135° Multi-Lock</td><td>Tilt Rocking Mechanism</td></tr>
+                <tr><td><strong>Material</strong></td><td>High-Tension Double Mesh</td><td>Breathable Fabric Mesh</td></tr>
             </table>
 
             <div class="footer">
@@ -125,10 +178,8 @@ def desk_review():
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>The Ultimate Motorized Standing Desk Setup</title>
-        {BASE_CSS}
+        <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>The Ultimate Motorized Standing Desk Setup</title>{BASE_CSS}
     </head>
     <body>
         <div class="container">
@@ -146,22 +197,10 @@ def desk_review():
 
             <h2>Workspace Hardware Metrics</h2>
             <table>
-                <tr>
-                    <th>Core Metric</th>
-                    <th>Specification</th>
-                </tr>
-                <tr>
-                    <td><strong>Desk Motor Configuration</strong></td>
-                    <td>Dual Synchronous High-Torque Motors</td>
-                </tr>
-                <tr>
-                    <td><strong>Max Load Capacity</strong></td>
-                    <td>265 lbs (Heavy-duty multi-display setups)</td>
-                </tr>
-                <tr>
-                    <td><strong>Monitor Mount Compatibility</strong></td>
-                    <td>VESA 75x75 & 100x100 (Up to 32-inch screens)</td>
-                </tr>
+                <tr><th>Core Metric</th><th>Specification</th></tr>
+                <tr><td><strong>Desk Motor Configuration</strong></td><td>Dual Synchronous High-Torque Motors</td></tr>
+                <tr><td><strong>Max Load Capacity</strong></td><td>265 lbs (Heavy-duty multi-display setups)</td></tr>
+                <tr><td><strong>Monitor Mount Compatibility</strong></td><td>VESA 75x75 & 100x100 (Up to 32-inch screens)</td></tr>
             </table>
 
             <div class="footer">
