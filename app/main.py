@@ -6,12 +6,14 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 app = FastAPI(title="ErgoEngine Platform")
 
-# خريطة روابط الأفلييت
 AFFILIATE_MAP = {
     "chair-premium": "https://amzn.to/4xWtXos",
     "chair-budget": "https://amzn.to/4xQU5B3",
     "standing-desk": "https://amzn.to/4y2YYXG",
-    "monitor-arm": "https://amzn.to/4xNeOpl"
+    "monitor-arm": "https://amzn.to/4xNeOpl",
+    "mx-master-3s": "https://www.amazon.com/dp/B09HM94VDS?tag=ergoengine-20",
+    "logitech-lift": "https://www.amazon.com/dp/B09J516ZBR?tag=ergoengine-20",
+    "anker-vertical-mouse": "https://www.amazon.com/dp/B00BIFNTMC?tag=ergoengine-20"
 }
 
 STATS_FILE = "click_stats.json"
@@ -34,7 +36,7 @@ def log_click(slug: str, referer: str):
         "source": referer or "Direct"
     }
     data["recent_logs"].insert(0, log_entry)
-    data["recent_logs"] = data["recent_logs"][:50]  # حفظ آخر 50 نقرة فقط
+    data["recent_logs"] = data["recent_logs"][:50]
 
     with open(STATS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -76,6 +78,7 @@ def home():
             <ul>
                 <li><a href="/posts/best-ergonomic-office-chairs" style="color: var(--primary); font-size: 1.15rem; font-weight: 600;">Say Goodbye to Lower Back Pain: Best Ergonomic Office Chairs Reviewed</a></li>
                 <li style="margin-top: 15px;"><a href="/posts/top-adjustable-standing-desks" style="color: var(--primary); font-size: 1.15rem; font-weight: 600;">The Ultimate Motorized Standing Desk Setup for Peak Performance</a></li>
+                <li style="margin-top: 15px;"><a href="/posts/best-vertical-ergonomic-mouse-guide" style="color: var(--primary); font-size: 1.15rem; font-weight: 600;">Top 3 Ergonomic Vertical Mice for Wrist Strain Relief (2026 Guide)</a></li>
             </ul>
         </div>
     </body>
@@ -201,6 +204,49 @@ def desk_review():
                 <tr><td><strong>Desk Motor Configuration</strong></td><td>Dual Synchronous High-Torque Motors</td></tr>
                 <tr><td><strong>Max Load Capacity</strong></td><td>265 lbs (Heavy-duty multi-display setups)</td></tr>
                 <tr><td><strong>Monitor Mount Compatibility</strong></td><td>VESA 75x75 & 100x100 (Up to 32-inch screens)</td></tr>
+            </table>
+
+            <div class="footer">
+                <p>Affiliate Disclosure: ErgoEngine earns performance-based commissions from qualifying purchases through Amazon links at no extra cost to you.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """)
+
+@app.get("/posts/best-vertical-ergonomic-mouse-guide")
+def vertical_mouse_review():
+    return HTMLResponse(f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Top 3 Ergonomic Vertical Mice for Wrist Strain Relief (2026)</title>{BASE_CSS}
+    </head>
+    <body>
+        <div class="container">
+            <span class="badge">Ergonomic Peripherals 2026</span>
+            <h1>Top 3 Ergonomic Vertical Mice for Wrist Strain Relief</h1>
+            <p>Traditional computer mice force the forearm into an unnatural pronated position. Over an 8-hour workday, this twisting strains the carpal tunnel and inflames forearm tendons. Vertical ergonomic mice rotate your wrist into a natural 57° handshake angle, eliminating muscular forearm tension.</p>
+
+            <h2>1. The Gold Standard: Logitech MX Master 3S</h2>
+            <p>Contoured thumb cradle, micro-sculpted ergonomic slope, tactile quiet clicking, and MagSpeed electromagnetic scroll wheel.</p>
+            <a href="/go/mx-master-3s" class="cta-btn" target="_blank" rel="nofollow noopener">Check Logitech MX Master 3S on Amazon &rarr;</a>
+
+            <h2>2. Pure Carpal Protection: Logitech Lift Vertical</h2>
+            <p>Engineered with a true 57-degree biomechanical handshake tilt specifically designed for small to medium hands.</p>
+            <a href="/go/logitech-lift" class="cta-btn btn-budget" target="_blank" rel="nofollow noopener">View Logitech Lift Vertical on Amazon &rarr;</a>
+
+            <h2>3. Best Budget Entry: Anker Wireless Vertical Mouse</h2>
+            <p>The most accessible entry point into posture-correct mouse geometry without compromising tracking stability.</p>
+            <a href="/go/anker-vertical-mouse" class="cta-btn btn-budget" target="_blank" rel="nofollow noopener">Check Anker Vertical Mouse on Amazon &rarr;</a>
+
+            <h2>Technical Comparison Matrix</h2>
+            <table>
+                <tr><th>Model</th><th>Grip Angle</th><th>Connectivity</th><th>Best For</th></tr>
+                <tr><td><strong>Logitech MX Master 3S</strong></td><td>Semi-Vertical Slope</td><td>Bluetooth / Logi Bolt</td><td>Heavy Productivity & Multi-Screen</td></tr>
+                <tr><td><strong>Logitech Lift Vertical</strong></td><td>57° Handshake Tilt</td><td>Bluetooth / Logi Bolt</td><td>Small-to-Medium Hands & Carpal Relief</td></tr>
+                <tr><td><strong>Anker Wireless Vertical</strong></td><td>54° Handshake Tilt</td><td>2.4G USB Dongle</td><td>Budget Posture Fix (&lt;$30)</td></tr>
             </table>
 
             <div class="footer">
