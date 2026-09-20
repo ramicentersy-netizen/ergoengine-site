@@ -6,15 +6,11 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 app = FastAPI(title="ErgoEngine Platform")
 
-# خريطة روابط الأفلييت والتوجيه المقنع
 AFFILIATE_MAP = {
-    # المقالات السابقة
     "chair-premium": "https://amzn.to/4xWtXos",
     "chair-budget": "https://amzn.to/4xQU5B3",
     "standing-desk": "https://amzn.to/4y2YYXG",
     "monitor-arm": "https://amzn.to/4xNeOpl",
-    
-    # روابط الفارات المريحة العمودية الجديدة
     "mx-master-3s": "https://www.amazon.com/dp/B09HM94VDS?tag=ergoengine-20",
     "logitech-lift": "https://www.amazon.com/dp/B09J516ZBR?tag=ergoengine-20",
     "anker-vertical-mouse": "https://www.amazon.com/dp/B00BIFNTMC?tag=ergoengine-20"
@@ -40,7 +36,7 @@ def log_click(slug: str, referer: str):
         "source": referer or "Direct"
     }
     data["recent_logs"].insert(0, log_entry)
-    data["recent_logs"] = data["recent_logs"][:50]  # حفظ آخر 50 نقرة فقط
+    data["recent_logs"] = data["recent_logs"][:50]
 
     with open(STATS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
