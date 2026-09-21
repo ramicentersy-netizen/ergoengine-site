@@ -11,9 +11,11 @@ AFFILIATE_MAP = {
     "chair-budget": "https://amzn.to/4xQU5B3",
     "standing-desk": "https://amzn.to/4y2YYXG",
     "monitor-arm": "https://amzn.to/4xNeOpl",
-    "mx-master-3s": "https://www.amazon.com/s?k=Logitech+Lift+Vertical+Ergonomic+Mouse&tag=ergoengine-20",
+    "mx-master-3s": "https://www.amazon.com/dp/B09HM94VDS?tag=ergoengine-20",
     "logitech-lift": "https://www.amazon.com/s?k=Logitech+Lift+Vertical+Ergonomic+Mouse&tag=ergoengine-20",
-    "anker-vertical-mouse": "https://www.amazon.com/s?k=Logitech+Lift+Vertical+Ergonomic+Mouse&tag=ergoengine-20"
+    "anker-vertical-mouse": "https://www.amazon.com/dp/B00BIFNTMC?tag=ergoengine-20",
+    "footrest-ergo-foam": "https://www.amazon.com/s?k=Ergonomic+Under+Desk+Foot+Rest+Teardrop+Foam&tag=ergoengine-20",
+    "footrest-adjustable-rocking": "https://www.amazon.com/s?k=Adjustable+Under+Desk+Footrest+Tilting+Ergonomic&tag=ergoengine-20",
 }
 
 STATS_FILE = "click_stats.json"
@@ -79,6 +81,7 @@ def home():
                 <li><a href="/posts/best-ergonomic-office-chairs" style="color: var(--primary); font-size: 1.15rem; font-weight: 600;">Say Goodbye to Lower Back Pain: Best Ergonomic Office Chairs Reviewed</a></li>
                 <li style="margin-top: 15px;"><a href="/posts/top-adjustable-standing-desks" style="color: var(--primary); font-size: 1.15rem; font-weight: 600;">The Ultimate Motorized Standing Desk Setup for Peak Performance</a></li>
                 <li style="margin-top: 15px;"><a href="/posts/best-vertical-ergonomic-mouse-guide" style="color: var(--primary); font-size: 1.15rem; font-weight: 600;">Top 3 Ergonomic Vertical Mice for Wrist Strain Relief (2026 Guide)</a></li>
+                <li style="margin-top: 15px;"><a href="/posts/best-ergonomic-under-desk-footrests" style="color: var(--primary); font-size: 1.15rem; font-weight: 600;">The Best Ergonomic Under-Desk Footrests for Posture and Circulation</a></li>
             </ul>
         </div>
     </body>
@@ -215,6 +218,7 @@ def desk_review():
     """)
 
 @app.get("/posts/best-vertical-ergonomic-mouse-guide")
+@app.get("/posts/best-vertical-ergonomic-mouse")
 def vertical_mouse_review():
     return HTMLResponse(f"""
     <!DOCTYPE html>
@@ -247,6 +251,47 @@ def vertical_mouse_review():
                 <tr><td><strong>Logitech MX Master 3S</strong></td><td>Semi-Vertical Slope</td><td>Bluetooth / Logi Bolt</td><td>Heavy Productivity & Multi-Screen</td></tr>
                 <tr><td><strong>Logitech Lift Vertical</strong></td><td>57° Handshake Tilt</td><td>Bluetooth / Logi Bolt</td><td>Small-to-Medium Hands & Carpal Relief</td></tr>
                 <tr><td><strong>Anker Wireless Vertical</strong></td><td>54° Handshake Tilt</td><td>2.4G USB Dongle</td><td>Budget Posture Fix (&lt;$30)</td></tr>
+            </table>
+
+            <div class="footer">
+                <p>Affiliate Disclosure: ErgoEngine earns performance-based commissions from qualifying purchases through Amazon links at no extra cost to you.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """)
+
+@app.get("/posts/best-ergonomic-under-desk-footrests")
+@app.get("/posts/best-ergonomic-footrest-guide")
+def footrest_review():
+    return HTMLResponse(f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>The Best Ergonomic Under-Desk Footrests for Posture and Circulation (2026)</title>{BASE_CSS}
+    </head>
+    <body>
+        <div class="container">
+            <span class="badge">Ergonomic Posture Guide 2026</span>
+            <h1>The Best Ergonomic Under-Desk Footrests for Posture & Circulation</h1>
+            <p>Dangling or improperly supported feet cause pressure points under the thighs, restrict blood circulation, and flatten the natural lumbar curve. Adding an under-desk footrest elevates your feet to a 90-degree knee angle, distributing body weight evenly across the chair seat pan.</p>
+
+            <h2>1. Top Cushion Comfort: High-Density Teardrop Foam Footrest</h2>
+            <p>Features an anatomical curved teardrop profile made from resilient memory foam that supports bare feet, socks, or shoes with a dual-height adjustable riser base.</p>
+            <a href="/go/footrest-ergo-foam" class="cta-btn" target="_blank" rel="nofollow noopener">View Memory Foam Footrest on Amazon &rarr;</a>
+
+            <h2>2. Best Active Seating: Multi-Angle Tilting & Rocking Footrest</h2>
+            <p>Equipped with an active rocking motion plate and non-skid textured massage surface to promote dynamic calf movement and prevent static leg fatigue during desk marathons.</p>
+            <a href="/go/footrest-adjustable-rocking" class="cta-btn btn-budget" target="_blank" rel="nofollow noopener">Check Adjustable Rocking Footrest on Amazon &rarr;</a>
+
+            <h2>Technical Comparison Matrix</h2>
+            <table>
+                <tr><th>Feature</th><th>Teardrop Foam Cushion</th><th>Adjustable Rocking Plate</th></tr>
+                <tr><td><strong>Ergonomic Motion</strong></td><td>Static Orthopedic Support</td><td>Dynamic Rocking & Tilt (+/- 30°)</td></tr>
+                <tr><td><strong>Core Material</strong></td><td>High-Density Contoured Foam</td><td>Impact-Resistant Heavy Polymer</td></tr>
+                <tr><td><strong>Surface Texture</strong></td><td>Washable Breathable Mesh Cover</td><td>Textured Foot-Massage Surface</td></tr>
+                <tr><td><strong>Primary Benefit</strong></td><td>Maximum Softness & Lumbar Relief</td><td>Active Leg Blood Circulation</td></tr>
             </table>
 
             <div class="footer">
