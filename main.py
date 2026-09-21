@@ -11,9 +11,9 @@ AFFILIATE_MAP = {
     "chair-budget": "https://amzn.to/4xQU5B3",
     "standing-desk": "https://amzn.to/4y2YYXG",
     "monitor-arm": "https://amzn.to/4xNeOpl",
-    "mx-master-3s": "https://www.amazon.com/dp/B09HM94VDS?tag=ergoengine-20",
-    "logitech-lift": "https://www.amazon.com/dp/B09J5775GQ?tag=ergoengine-20",
-    "anker-vertical-mouse": "https://www.amazon.com/dp/B00BIFNTMC?tag=ergoengine-20"
+    "mx-master-3s": "https://www.amazon.com/s?k=Logitech+Lift+Vertical+Ergonomic+Mouse&tag=ergoengine-20",
+    "logitech-lift": "https://www.amazon.com/s?k=Logitech+Lift+Vertical+Ergonomic+Mouse&tag=ergoengine-20",
+    "anker-vertical-mouse": "https://www.amazon.com/s?k=Logitech+Lift+Vertical+Ergonomic+Mouse&tag=ergoengine-20"
 }
 
 STATS_FILE = "click_stats.json"
